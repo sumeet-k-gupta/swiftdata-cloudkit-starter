@@ -1,0 +1,60 @@
+name: Checklists
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    # No DEVELOPMENT_TEAM on purpose: set yours in Xcode (Signing & Capabilities) or here.
+targets:
+  Checklists:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    info:
+      path: Sources/Info.plist
+      properties:
+        CFBundleDisplayName: Checklists
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        # Silent pushes from CloudKit tell the app another device changed the data.
+        UIBackgroundModes:
+          - remote-notification
+    entitlements:
+      path: Sources/Checklists.entitlements
+      properties:
+        # PLACEHOLDER: replace with your own iCloud container (also in StoreFactory callers / ChecklistsApp).
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.com.example.localfirststarter
+        com.apple.developer.icloud-services:
+          - CloudKit
+        aps-environment: development
+    settings:
+      base:
+        # PLACEHOLDER: replace with your own bundle id.
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.localfirststarter
+        GENERATE_INFOPLIST_FILE: NO
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: 1.0
+        TARGETED_DEVICE_FAMILY: "1"
+  ChecklistsTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests]
+    dependencies:
+      - target: Checklists
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.localfirststarter.tests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  Checklists:
+    build:
+      targets:
+        Checklists: all
+    test:
+      targets: [ChecklistsTests]
